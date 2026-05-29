@@ -6,15 +6,7 @@ import {
   Alert, Snackbar, Chip, IconButton, Tooltip, Skeleton, Paper,
   Switch, FormControlLabel, Divider,
 } from '@mui/material';
-
-
-
-
-
-
-
-
-
+import CalendarTodayRoundedIcon from "@mui/icons-material/CalendarTodayRounded";
 import { useLang } from '../context/AppContext.jsx';
 import { getDoctors, createDoctor, updateDoctor, deleteDoctor, syncFromGoogle } from '../services/api.js';
 import { AccessTimeRoundedIcon, AddRoundedIcon, CoffeeRoundedIcon, DeleteRoundedIcon, EditRoundedIcon, EmailRoundedIcon, PersonRoundedIcon, PhoneRoundedIcon, SyncRoundedIcon } from '../components/icons';

@@ -6,6 +6,7 @@ import {
   FormControl, InputLabel, Button, Tooltip,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 
 
 import { useLang } from '../context/AppContext.jsx';

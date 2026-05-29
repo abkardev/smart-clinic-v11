@@ -27,55 +27,134 @@ async function main() {
   });
   console.log(`✅ Superadmin: ${superadmin.email}`);
 
+  // ─── Additional Admins ──────────────────────────────────────────────────────
+  const adminEmail2 = 'admin1@smartclinic.sa';
+  const adminEmail3 = 'admin2@smartclinic.sa';
+
+  const admin1 =
+    (await prisma.user.findUnique({ where: { email: adminEmail2 } })) ??
+    (await prisma.user.create({
+      data: {
+        name: 'Admin One',
+        email: adminEmail2,
+        password: await bcrypt.hash('Admin@12345', 12),
+        role: UserRole.admin,
+        status: UserStatus.approved,
+      },
+    }));
+
+  const admin2 =
+    (await prisma.user.findUnique({ where: { email: adminEmail3 } })) ??
+    (await prisma.user.create({
+      data: {
+        name: 'Admin Two',
+        email: adminEmail3,
+        password: await bcrypt.hash('Admin@12345', 12),
+        role: UserRole.admin,
+        status: UserStatus.approved,
+      },
+    }));
+
+  console.log(`✅ Admin 1: ${admin1.email}`);
+  console.log(`✅ Admin 2: ${admin2.email}`);
+
   // ─── Doctors ────────────────────────────────────────────────────────────────
   const doctorsData = [
-    {
-      nameEn: 'Dr. Ahmed Al-Mansouri',
-      nameAr: 'د. أحمد المنصوري',
-      specialtyEn: 'General Medicine',
-      specialtyAr: 'طب عام',
-      phone: '+966501234567',
-      email: 'ahmed@smartclinic.sa',
-      calendarId: 'primary',
-      workingStart: '09:00',
-      workingEnd: '17:00',
-      workingDays: [0, 1, 2, 3, 4],
-      slotDuration: 30,
-      breakEnabled: true,
-      breakStart: '13:00',
-      breakEnd: '14:00',
-    },
-    {
-      nameEn: 'Dr. Sarah Al-Zahrani',
-      nameAr: 'د. سارة الزهراني',
-      specialtyEn: 'Pediatrics',
-      specialtyAr: 'طب أطفال',
-      phone: '+966502345678',
-      email: 'sarah@smartclinic.sa',
-      calendarId: 'primary',
-      workingStart: '08:00',
-      workingEnd: '16:00',
-      workingDays: [1, 2, 3, 4, 6],
-      slotDuration: 20,
-      breakEnabled: false,
-    },
-    {
-      nameEn: 'Dr. Khalid Al-Otaibi',
-      nameAr: 'د. خالد العتيبي',
-      specialtyEn: 'Cardiology',
-      specialtyAr: 'أمراض القلب',
-      phone: '+966503456789',
-      email: 'khalid@smartclinic.sa',
-      calendarId: 'primary',
-      workingStart: '10:00',
-      workingEnd: '18:00',
-      workingDays: [0, 1, 2, 3, 4],
-      slotDuration: 45,
-      breakEnabled: true,
-      breakStart: '14:00',
-      breakEnd: '15:00',
-    },
-  ];
+  {
+    nameEn: 'Dr. Ahmed Al-Mansouri',
+    nameAr: 'د. أحمد المنصوري',
+    specialtyEn: 'General Medicine',
+    specialtyAr: 'طب عام',
+    phone: '+966501234567',
+    email: 'ahmed@smartclinic.sa',
+    calendarId: 'primary',
+    workingStart: '09:00',
+    workingEnd: '17:00',
+    workingDays: [0, 1, 2, 3, 4],
+    slotDuration: 30,
+    breakEnabled: true,
+    breakStart: '13:00',
+    breakEnd: '14:00',
+  },
+  {
+    nameEn: 'Dr. Sarah Al-Zahrani',
+    nameAr: 'د. سارة الزهراني',
+    specialtyEn: 'Pediatrics',
+    specialtyAr: 'طب أطفال',
+    phone: '+966502345678',
+    email: 'sarah@smartclinic.sa',
+    calendarId: 'primary',
+    workingStart: '08:00',
+    workingEnd: '16:00',
+    workingDays: [1, 2, 3, 4, 6],
+    slotDuration: 20,
+    breakEnabled: false,
+  },
+  {
+    nameEn: 'Dr. Khalid Al-Otaibi',
+    nameAr: 'د. خالد العتيبي',
+    specialtyEn: 'Cardiology',
+    specialtyAr: 'أمراض القلب',
+    phone: '+966503456789',
+    email: 'khalid@smartclinic.sa',
+    calendarId: 'primary',
+    workingStart: '10:00',
+    workingEnd: '18:00',
+    workingDays: [0, 1, 2, 3, 4],
+    slotDuration: 45,
+    breakEnabled: true,
+    breakStart: '14:00',
+    breakEnd: '15:00',
+  },
+
+  // ➕ ADDED DOCTORS (same structure)
+  {
+    nameEn: 'Dr. Reem Abdullah',
+    nameAr: 'د. ريم عبدالله',
+    specialtyEn: 'Dermatology',
+    specialtyAr: 'جلدية',
+    phone: '+966504567890',
+    email: 'reem@smartclinic.sa',
+    calendarId: 'primary',
+    workingStart: '09:00',
+    workingEnd: '17:00',
+    workingDays: [0, 1, 2, 3, 4],
+    slotDuration: 30,
+    breakEnabled: true,
+    breakStart: '12:30',
+    breakEnd: '13:30',
+  },
+  {
+    nameEn: 'Dr. Faisal Al-Harbi',
+    nameAr: 'د. فيصل الحربي',
+    specialtyEn: 'Orthopedics',
+    specialtyAr: 'عظام',
+    phone: '+966505678901',
+    email: 'faisal@smartclinic.sa',
+    calendarId: 'primary',
+    workingStart: '10:00',
+    workingEnd: '18:00',
+    workingDays: [0, 1, 2, 3, 4],
+    slotDuration: 40,
+    breakEnabled: false,
+  },
+  {
+    nameEn: 'Dr. Mona Al-Qahtani',
+    nameAr: 'د. منى القحطاني',
+    specialtyEn: 'Gynecology',
+    specialtyAr: 'نساء وولادة',
+    phone: '+966506789012',
+    email: 'mona@smartclinic.sa',
+    calendarId: 'primary',
+    workingStart: '08:00',
+    workingEnd: '15:00',
+    workingDays: [1, 2, 3, 4, 5],
+    slotDuration: 30,
+    breakEnabled: true,
+    breakStart: '11:30',
+    breakEnd: '12:30',
+  },
+];
 
   const doctors: Awaited<ReturnType<typeof prisma.doctor.upsert>>[] = [];
   for (const d of doctorsData) {
@@ -97,47 +176,89 @@ async function main() {
   const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
 
   const bookings = [
-    {
-      name: 'Mohammed Al-Rashidi',
-      phone: '+966551234567',
-      service: 'General Consultation',
-      date: today,
-      time: '09:00',
-      status: BookingStatus.confirmed,
-      doctorId: doctors[0]?.id,
-      source: BookingSource.dashboard,
-    },
-    {
-      name: 'Fatima Al-Ghamdi',
-      phone: '+966552345678',
-      service: 'Follow-up',
-      date: today,
-      time: '10:00',
-      status: BookingStatus.pending,
-      doctorId: doctors[0]?.id,
-      source: BookingSource.whatsapp,
-    },
-    {
-      name: 'Abdullah Al-Shehri',
-      phone: '+966553456789',
-      service: 'Specialist Visit',
-      date: tomorrow,
-      time: '10:00',
-      status: BookingStatus.pending,
-      doctorId: doctors[1]?.id,
-      source: BookingSource.dashboard,
-    },
-    {
-      name: 'Nora Al-Qahtani',
-      phone: '+966554567890',
-      service: 'Lab Results Review',
-      date: tomorrow,
-      time: '14:00',
-      status: BookingStatus.confirmed,
-      doctorId: doctors[2]?.id,
-      source: BookingSource.dashboard,
-    },
-  ];
+  {
+    name: 'Mohammed Al-Rashidi',
+    phone: '+966551234567',
+    service: 'General Consultation',
+    date: today,
+    time: '09:00',
+    status: BookingStatus.confirmed,
+    doctorId: doctors[0]?.id,
+    source: BookingSource.dashboard,
+  },
+  {
+    name: 'Fatima Al-Ghamdi',
+    phone: '+966552345678',
+    service: 'Follow-up',
+    date: today,
+    time: '10:00',
+    status: BookingStatus.pending,
+    doctorId: doctors[0]?.id,
+    source: BookingSource.whatsapp,
+  },
+  {
+    name: 'Abdullah Al-Shehri',
+    phone: '+966553456789',
+    service: 'Specialist Visit',
+    date: tomorrow,
+    time: '10:00',
+    status: BookingStatus.pending,
+    doctorId: doctors[1]?.id,
+    source: BookingSource.dashboard,
+  },
+  {
+    name: 'Nora Al-Qahtani',
+    phone: '+966554567890',
+    service: 'Lab Results Review',
+    date: tomorrow,
+    time: '14:00',
+    status: BookingStatus.confirmed,
+    doctorId: doctors[2]?.id,
+    source: BookingSource.dashboard,
+  },
+
+  // ➕ ADDED BOOKINGS
+  {
+    name: 'Yousef Nasser',
+    phone: '+966556123456',
+    service: 'Dermatology Consultation',
+    date: today,
+    time: '11:00',
+    status: BookingStatus.completed,
+    doctorId: doctors[3]?.id,
+    source: BookingSource.dashboard,
+  },
+  {
+    name: 'Lina Hassan',
+    phone: '+966557234567',
+    service: 'Orthopedic Checkup',
+    date: today,
+    time: '12:00',
+    status: BookingStatus.cancelled,
+    doctorId: doctors[4]?.id,
+    source: BookingSource.whatsapp,
+  },
+  {
+    name: 'Omar Khaled',
+    phone: '+966558345678',
+    service: 'Emergency Visit',
+    date: tomorrow,
+    time: '09:30',
+    status: BookingStatus.confirmed,
+    doctorId: doctors[2]?.id,
+    source: BookingSource.dashboard,
+  },
+  {
+    name: 'Sara Mohammed',
+    phone: '+966559456789',
+    service: 'Routine Checkup',
+    date: tomorrow,
+    time: '16:00',
+    status: BookingStatus.pending,
+    doctorId: doctors[1]?.id,
+    source: BookingSource.dashboard,
+  },
+];
 
   for (const b of bookings) {
     if (!b.doctorId) continue;
